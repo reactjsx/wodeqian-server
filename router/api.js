@@ -1,12 +1,9 @@
 const express = require('express'),
       Wallet = require('../models/wallet'),
       Transaction = require('../models/transaction'),
-      Budget = require('../models/budget'),
-      bodyParser = require('body-parser');
+      Budget = require('../models/budget');
 
 const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
 
 router.use((req, res, next) => {
   console.log(`There's a request to our server!`);
@@ -25,6 +22,10 @@ router.get('/transactions', (req, res) => {
       res.json(wallet);
     }
   });
+});
+
+router.get('/transactions/new', (req, res) => {
+  res.render('new');
 });
 
 router.post('/transactions', (req, res) => {

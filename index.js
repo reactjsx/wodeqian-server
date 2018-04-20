@@ -11,6 +11,8 @@ const express = require('express'),
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 const mongoDB = 'mongodb://toffy:thaonguyen2604@ds247759.mlab.com:47759/wodeqian';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
