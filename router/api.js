@@ -48,6 +48,7 @@ router.post('/transactions', (req, res) => {
       });
     }
   });
+  res.json({});
 });
 
 module.exports = router;
