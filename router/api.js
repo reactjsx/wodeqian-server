@@ -28,6 +28,7 @@ router.get('/transactions', (req, res) => {
 });
 
 router.post('/transactions', (req, res) => {
+  console.log(req.body);
   Wallet.findOne({name: req.body.wallet}, (err, wallet) => {
     if (err) {
       console.error(err);
