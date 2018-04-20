@@ -1,9 +1,12 @@
 const express = require('express'),
       Wallet = require('../models/wallet'),
       Transaction = require('../models/transaction'),
-      Budget = require('../models/budget');
+      Budget = require('../models/budget'),
+      bodyParser = require('body-parser');
 
 const router = express.Router();
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
 
 router.use((req, res, next) => {
   console.log(`There's a request to our server!`);
