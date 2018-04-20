@@ -3,7 +3,9 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       helmet = require('helmet'),
       morgan = require('morgan'),
+      Wallet = require('./models/wallet'),
       Transaction = require('./models/transaction'),
+      Budget = require('./models/budget'),
       apiRouter = require('./router/api');
 
 const app = express();
@@ -15,14 +17,46 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB Connection Error!'));
 
+// const newWallet = new Wallet({
+//   name: 'Chun Cash',
+//   currency: 'yen',
+//   initBalance: 20000,
+// });
+
 // Transaction.create({
-//   name: 'Miso Ramen',
-//   category: 'Lunch',
-//   wallet: 'Cash',
+//   name: 'Bread',
+//   category: 'Convenient',
 //   dateOccurred: Date.now(),
-//   cost: 800
-// }).then((transaction) => {
-//   console.log(transaction);
+//   cost: 200
+// }, (err, transaction) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     newWallet.transactions.push(transaction);
+//     newWallet.save((err) => {
+//       if (err) {
+//         console.error(err);
+//       }
+//     });
+//   }
+// });
+
+// Budget.create({
+//   category: 'Convenient',
+//   year: 2018,
+//   month: 4,
+//   amount: 15000
+// }, (err, budget) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     newWallet.budgets.push(budget);
+//     newWallet.save((err) => {
+//       if (err) {
+//         console.error(err);
+//       }
+//     });
+//   }
 // });
 
 app.use(morgan('common'));
