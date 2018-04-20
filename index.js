@@ -28,7 +28,9 @@ db.on('error', console.error.bind(console, 'MongoDB Connection Error!'));
 // Transaction.create({
 //   name: 'Bread',
 //   category: 'Convenient',
-//   dateOccurred: Date.now(),
+//   year: 2018,
+//   month: 4,
+//   day: 20,
 //   cost: 200
 // }, (err, transaction) => {
 //   if (err) {

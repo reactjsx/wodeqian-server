@@ -29,7 +29,6 @@ router.get('/transactions/new', (req, res) => {
 });
 
 router.post('/transactions', (req, res) => {
-  console.log(req.body);
   Wallet.findOne({name: req.body.wallet}, (err, wallet) => {
     if (err) {
       console.error(err);
@@ -37,7 +36,9 @@ router.post('/transactions', (req, res) => {
       Transaction.create({
         name: req.body.name,
         category: req.body.category,
-        dateOccurred: req.body.date,
+        year: req.body.year,
+        month: req.body.month,
+        day: req.body.day,
         cost: req.body.cost
       }, (err, transaction) => {
         if (err) {
