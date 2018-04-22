@@ -16,18 +16,29 @@ router.get('/', (req, res) => {
   res.send('HELLO');
 });
 
+router.get('/wallets/new', (req, res) => {
+  res.render('newWallet');
+})
+
+router.post('/wallets', (req, res) => {
+  Wallet.create({
+    name: req.body.name,
+    currency: req.body.currency,
+    initBalance: req.body.initBalance
+  }).then(wallet => {
+    console.log(wallet);
+    res.json({});
+  })
+})
+
 router.get('/transactions', (req, res) => {
-  Wallet.findOne({name: 'Chun Cash'}).populate('transactions').populate('budgets').exec((err, wallet) => {
-    if (err) {
-      console.error(err);
-    } else {
-      res.json(wallet);
-    }
-  });
+  Wallet.find({}).populate('transactions').populate('budgets').exec((err, wallets) => {
+    res.json(wallets);
+  })
 });
 
 router.get('/transactions/new', (req, res) => {
-  res.render('new');
+  res.render('newTransaction');
 });
 
 router.post('/transactions', (req, res) => {
