@@ -69,6 +69,6 @@ app.use(helmet());
 app.use('/api', apiRouter);
 
 app.set('port', (process.env.API_PORT || 8080));
-app.listen(app.get('port'), () => {
+app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`Server is listening at http://${process.env.IP}:${process.env.PORT}`);
 })
