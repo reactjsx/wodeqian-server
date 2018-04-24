@@ -3,7 +3,8 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       helmet = require('helmet'),
       morgan = require('morgan'),
-      Wallet = require('./models/wallet'),
+      wallet = require('./models/wallet'),
+      User = require('./models/user'),
       Transaction = require('./models/transaction'),
       Budget = require('./models/budget'),
       apiRouter = require('./router/api');
@@ -19,6 +20,7 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB Connection Error!'));
 
+const Wallet = wallet.Wallet;
 // const newWallet = new Wallet({
 //   name: 'Chun Cash',
 //   currency: 'yen',
@@ -63,12 +65,26 @@ db.on('error', console.error.bind(console, 'MongoDB Connection Error!'));
 //   }
 // });
 
+// User.findOne({username: 'toffy'}, (err, user) => {
+//   if (err) {
+//     console.error(err);
+//   } else {
+//     User.populate(user, {
+//       path: 'wallets'
+//     }, (err, user) => {
+//       Wallet.populate(user.wallets, [
+//         {path: 'transactions'},
+//         {path: 'budgets'}
+//       ], (err, wallet) => {
+//         console.log(wallet);
+//       })
+//     })
+//   }
+// })
+
 app.use(morgan('common'));
 app.use(helmet());
-
 app.use('/api', apiRouter);
-
-app.set('port', (process.env.API_PORT || 8080));
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`Server is listening at http://${process.env.IP}:${process.env.PORT}`);
 })

@@ -1,10 +1,13 @@
 const express = require('express'),
-      Wallet = require('../models/wallet'),
+      wallet = require('../models/wallet'),
       Transaction = require('../models/transaction'),
-      Budget = require('../models/budget');
+      Budget = require('../models/budget'),
+      User = require('../models/user'),
+      bcrypt = require('bcrypt'),
+      helper = require('../public/javascript/helper');
 
 const router = express.Router();
-
+const Wallet = wallet.Wallet;
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
@@ -18,7 +21,7 @@ router.get('/', (req, res) => {
 
 router.get('/wallets/new', (req, res) => {
   res.render('newWallet');
-})
+});
 
 router.post('/wallets', (req, res) => {
   Wallet.create({
@@ -28,13 +31,37 @@ router.post('/wallets', (req, res) => {
   }).then(wallet => {
     console.log(wallet);
     res.json({});
-  })
-})
+  });
+});
 
 router.get('/transactions', (req, res) => {
-  Wallet.find({}).populate('transactions').populate('budgets').exec((err, wallets) => {
-    res.json(wallets);
-  })
+  User.findOne({username: 'toffy'}, (err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      User.populate(user, {
+        path: 'wallets'
+      }, (err, user) => {
+        if (err) {
+          console.error(err);
+        } else {
+          Wallet.populate(user.wallets, [
+            {path: 'transactions'},
+            {path: 'budgets'}
+          ], (err, wallets) => {
+            if (err) {
+              console.error(err);
+            } else {
+              res.json(wallets);
+            }
+          });
+        }
+      });
+    }
+  });
+  // Wallet.find({}).populate('transactions').populate('budgets').exec((err, wallets) => {
+  //   res.json(wallets);
+  // });
 });
 
 router.get('/transactions/new', (req, res) => {
@@ -68,6 +95,60 @@ router.post('/transactions', (req, res) => {
     }
   });
   res.json({});
+});
+
+router.get('/users/signup', (req, res) => {
+  res.render('signup');
+});
+
+router.post('/users/signup', (req, res) => {
+  const hash= bcrypt.hashSync(req.body.password.trim(), 10);
+  const user = new User ({
+    username: req.body.username.trim(),
+    password: hash
+  });
+  user.save((err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const token = helper.generateToken(user);
+      res.json({
+        token: token
+      });
+    }
+  });
+});
+
+router.get('/users/signin', (req, res) => {
+  res.render('signin');
+});
+
+router.post('/users/signin', (req, res) => {
+  User.findOne({username: req.body.username})
+    .exec((err, user) => {
+      if (err) {
+        console.error(err);
+      } else {
+        if (!user) {
+          return res.status(404).json({
+            error: true,
+            message: 'Username or Password is wrong'
+          });
+        }
+        bcrypt.compare(req.body.password, user.password, (err, valid) => {
+          if (!valid) {
+            return res.status(404).json({
+              error: true,
+              message: 'Username or Password is wrong'
+            });
+          }
+          const token = helper.generateToken(user);
+          res.json({
+            token: token
+          });
+        });
+      }
+    });
 });
 
 module.exports = router;
