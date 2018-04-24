@@ -24,13 +24,25 @@ router.get('/wallets/new', (req, res) => {
 });
 
 router.post('/wallets', (req, res) => {
-  Wallet.create({
-    name: req.body.name,
-    currency: req.body.currency,
-    initBalance: req.body.initBalance
-  }).then(wallet => {
-    console.log(wallet);
-    res.json({});
+  User.findOne({username: 'toffy'}, (err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      Wallet.create({
+        name: req.body.name,
+        currency: req.body.currency,
+        initBalance: req.body.initBalance
+      }).then(wallet => {
+        user.wallets.push(wallet);
+        user.save(err => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({});
+          }
+        });
+      });
+    }
   });
 });
 
