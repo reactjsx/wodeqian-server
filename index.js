@@ -7,7 +7,8 @@ const express = require('express'),
       User = require('./models/user'),
       Transaction = require('./models/transaction'),
       Budget = require('./models/budget'),
-      apiRouter = require('./router/api');
+      apiRouter = require('./router/api'),
+      jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -82,8 +83,26 @@ const Wallet = wallet.Wallet;
 //   }
 // })
 
-app.use(morgan('common'));
+app.use(morgan('combined'));
 app.use(helmet());
+app.use((req, res, next) => {
+  let token = req.query.token;
+  if (!token) {
+    return next();
+  }
+  jwt.verify(token, 'Who The Fuck Are You', (err, user) => {
+    if (err) {
+      return res.status(404).json({
+        error: true,
+        message: 'Username or Password is wrong'
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  });
+});
+
 app.use('/api', apiRouter);
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`Server is listening at http://${process.env.IP}:${process.env.PORT}`);

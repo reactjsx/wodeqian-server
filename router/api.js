@@ -24,7 +24,13 @@ router.get('/wallets/new', (req, res) => {
 });
 
 router.post('/wallets', (req, res) => {
-  User.findOne({username: 'toffy'}, (err, user) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({
+      message: 'Permission Denied'
+    });
+  }
+  User.findOne({username: user.username}, (err, user) => {
     if (err) {
       console.error(err);
     } else {
@@ -47,7 +53,13 @@ router.post('/wallets', (req, res) => {
 });
 
 router.get('/transactions', (req, res) => {
-  User.findOne({username: 'toffy'}, (err, user) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({
+      message: 'Permission Denied'
+    });
+  }
+  User.findOne({username: user.username}, (err, user) => {
     if (err) {
       console.error(err);
     } else {
@@ -81,6 +93,12 @@ router.get('/transactions/new', (req, res) => {
 });
 
 router.post('/transactions', (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({
+      message: 'Permission Denied'
+    });
+  }
   Wallet.findOne({name: req.body.wallet}, (err, wallet) => {
     if (err) {
       console.error(err);
@@ -107,6 +125,25 @@ router.post('/transactions', (req, res) => {
     }
   });
   res.json({});
+});
+
+router.delete('/transactions', (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({
+      message: 'Permission Denied'
+    });
+  }
+  Wallet.findOne({name: req.body.wallet}, (err, wallet) => {
+    if (err) {
+      console.error(err);
+    } else {
+      Wallet.update(
+        { _id: wallet._id },
+        { $pull: { transactions: req.body.id } }
+      ).then(() => res.json({}));
+    }
+  });
 });
 
 router.get('/users/signup', (req, res) => {
@@ -148,7 +185,7 @@ router.post('/users/signin', (req, res) => {
           });
         }
         bcrypt.compare(req.body.password, user.password, (err, valid) => {
-          if (!valid) {
+          if (err || !valid) {
             return res.status(404).json({
               error: true,
               message: 'Username or Password is wrong'
@@ -156,6 +193,7 @@ router.post('/users/signin', (req, res) => {
           }
           const token = helper.generateToken(user);
           res.json({
+            username: user.username,
             token: token
           });
         });
