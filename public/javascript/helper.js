@@ -5,7 +5,7 @@ module.exports = helper;
 
 helper.generateToken = (user) => {
   const u = {
-    name: user.username,
+    username: user.username,
     _id: user._id.toString()
   };
   

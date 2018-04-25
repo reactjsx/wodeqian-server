@@ -59,6 +59,7 @@ router.get('/transactions', (req, res) => {
       message: 'Permission Denied'
     });
   }
+  console.log(user);
   User.findOne({username: user.username}, (err, user) => {
     if (err) {
       console.error(err);

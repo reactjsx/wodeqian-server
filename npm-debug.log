@@ -9,7 +9,7 @@
 6 silly lifecycle wodeqian@1.0.0~prestart: no script for prestart, continuing
 7 info lifecycle wodeqian@1.0.0~start: wodeqian@1.0.0
 8 verbose lifecycle wodeqian@1.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle wodeqian@1.0.0~start: PATH: /home/ec2-user/.nvm/versions/node/v6.13.1/lib/node_modules/npm/bin/node-gyp-bin:/home/ec2-user/environment/wodeqian/server/node_modules/.bin:/home/ec2-user/.nvm/versions/node/v6.13.1/bin:/usr/local/rvm/gems/ruby-2.4.1/bin:/usr/local/rvm/gems/ruby-2.4.1@global/bin:/usr/local/rvm/rubies/ruby-2.4.1/bin:/usr/local/bin:/bin:/usr/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/opt/aws/bin:/usr/local/rvm/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin
+9 verbose lifecycle wodeqian@1.0.0~start: PATH: /home/ec2-user/.nvm/versions/node/v6.13.1/lib/node_modules/npm/bin/node-gyp-bin:/home/ec2-user/environment/wodeqian/server/node_modules/.bin:/home/ec2-user/.nvm/versions/node/v6.13.1/bin:/usr/local/rvm/gems/ruby-2.4.1/bin:/usr/local/rvm/gems/ruby-2.4.1@global/bin:/usr/local/rvm/rubies/ruby-2.4.1/bin:/usr/local/bin:/bin:/usr/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin:/usr/local/rvm/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 10 verbose lifecycle wodeqian@1.0.0~start: CWD: /home/ec2-user/environment/wodeqian/server
 11 silly lifecycle wodeqian@1.0.0~start: Args: [ '-c', 'node index.js' ]
 12 silly lifecycle wodeqian@1.0.0~start: Returned: code: 1  signal: null
