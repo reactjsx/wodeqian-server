@@ -31,8 +31,10 @@ router.post('/wallets', (req, res) => {
     });
   }
   User.findOne({username: user.username}, (err, user) => {
-    if (err) {
-      console.error(err);
+    if (err || !user) {
+      res.status(401).json({
+        message: 'Permission Denied'
+      });
     } else {
       Wallet.create({
         name: req.body.name,
@@ -61,8 +63,10 @@ router.get('/transactions', (req, res) => {
   }
   console.log(user);
   User.findOne({username: user.username}, (err, user) => {
-    if (err) {
-      console.error(err);
+    if (err || !user) {
+      res.status(401).json({
+        message: 'Permission Denied'
+      });
     } else {
       User.populate(user, {
         path: 'wallets'
