@@ -4,7 +4,8 @@ const express = require('express'),
       Budget = require('../models/budget'),
       User = require('../models/user'),
       bcrypt = require('bcrypt'),
-      helper = require('../public/javascript/helper');
+      helper = require('../public/javascript/helper'),
+      jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const Wallet = wallet.Wallet;
@@ -204,6 +205,34 @@ router.post('/users/signin', (req, res) => {
         });
       }
     });
+});
+
+router.get('/isUserSignedIn', (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    return res.status(401).json({
+      error: true,
+      message: 'Token must be passed'
+    });
+  }
+  jwt.verify(token, 'Who The Fuck Are You', (err, user) => {
+    if (err) {
+      console.error(err);
+    } else {
+      User.find({username: user.username}, (err, user) => {
+        if (err || !user) {
+          res.status(401).json({
+            message: 'Permission Denied'
+          });
+        } else {
+          res.json({
+            username: user.username,
+            token: token
+          });
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;
