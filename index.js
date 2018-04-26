@@ -92,7 +92,7 @@ app.use((req, res, next) => {
   }
   jwt.verify(token, 'Who The Fuck Are You', (err, user) => {
     if (err) {
-      return res.status(404).json({
+      return res.status(401).json({
         error: true,
         message: 'Username or Password is wrong'
       });

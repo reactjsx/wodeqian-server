@@ -185,14 +185,14 @@ router.post('/users/signin', (req, res) => {
         console.error(err);
       } else {
         if (!user) {
-          return res.status(404).json({
+          return res.status(401).json({
             error: true,
             message: 'Username or Password is wrong'
           });
         }
         bcrypt.compare(req.body.password, user.password, (err, valid) => {
           if (err || !valid) {
-            return res.status(404).json({
+            return res.status(401).json({
               error: true,
               message: 'Username or Password is wrong'
             });
