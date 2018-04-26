@@ -28,12 +28,14 @@ router.post('/wallets', (req, res) => {
   const user = req.user;
   if (!user) {
     return res.status(401).json({
+      error: true,
       message: 'Permission Denied'
     });
   }
   User.findOne({username: user.username}, (err, user) => {
     if (err || !user) {
       res.status(401).json({
+        error: true,
         message: 'Permission Denied'
       });
     } else {
@@ -59,6 +61,7 @@ router.get('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
     return res.status(401).json({
+      error: true,
       message: 'Permission Denied'
     });
   }
@@ -66,6 +69,7 @@ router.get('/transactions', (req, res) => {
   User.findOne({username: user.username}, (err, user) => {
     if (err || !user) {
       res.status(401).json({
+        error: true,
         message: 'Permission Denied'
       });
     } else {
@@ -102,6 +106,7 @@ router.post('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
     return res.status(401).json({
+      error: true,
       message: 'Permission Denied'
     });
   }
@@ -137,6 +142,7 @@ router.delete('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
     return res.status(401).json({
+      error: true,
       message: 'Permission Denied'
     });
   }
@@ -222,6 +228,7 @@ router.get('/isUserSignedIn', (req, res) => {
       User.find({username: user.username}, (err, user) => {
         if (err || !user) {
           res.status(401).json({
+            error: true,
             message: 'Permission Denied'
           });
         } else {
