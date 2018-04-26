@@ -27,14 +27,14 @@ router.get('/wallets/new', (req, res) => {
 router.post('/wallets', (req, res) => {
   const user = req.user;
   if (!user) {
-    return res.status(401).json({
+    return res.json({
       error: true,
       message: 'Permission Denied'
     });
   }
   User.findOne({username: user.username}, (err, user) => {
     if (err || !user) {
-      res.status(401).json({
+      res.json({
         error: true,
         message: 'Permission Denied'
       });
@@ -60,7 +60,7 @@ router.post('/wallets', (req, res) => {
 router.get('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
-    return res.status(401).json({
+    return res.json({
       error: true,
       message: 'Permission Denied'
     });
@@ -68,7 +68,7 @@ router.get('/transactions', (req, res) => {
   console.log(user);
   User.findOne({username: user.username}, (err, user) => {
     if (err || !user) {
-      res.status(401).json({
+      res.json({
         error: true,
         message: 'Permission Denied'
       });
@@ -105,7 +105,7 @@ router.get('/transactions/new', (req, res) => {
 router.post('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
-    return res.status(401).json({
+    return res.json({
       error: true,
       message: 'Permission Denied'
     });
@@ -141,7 +141,7 @@ router.post('/transactions', (req, res) => {
 router.delete('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
-    return res.status(401).json({
+    return res.json({
       error: true,
       message: 'Permission Denied'
     });
@@ -191,14 +191,14 @@ router.post('/users/signin', (req, res) => {
         console.error(err);
       } else {
         if (!user) {
-          return res.status(401).json({
+          return res.json({
             error: true,
             message: 'Username or Password is wrong'
           });
         }
         bcrypt.compare(req.body.password, user.password, (err, valid) => {
           if (err || !valid) {
-            return res.status(401).json({
+            return res.json({
               error: true,
               message: 'Username or Password is wrong'
             });
@@ -216,7 +216,7 @@ router.post('/users/signin', (req, res) => {
 router.get('/isUserSignedIn', (req, res) => {
   const token = req.query.token;
   if (!token) {
-    return res.status(401).json({
+    return res.json({
       error: true,
       message: 'Token must be passed'
     });
@@ -227,7 +227,7 @@ router.get('/isUserSignedIn', (req, res) => {
     } else {
       User.find({username: user.username}, (err, user) => {
         if (err || !user) {
-          res.status(401).json({
+          res.json({
             error: true,
             message: 'Permission Denied'
           });
