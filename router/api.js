@@ -41,7 +41,7 @@ router.post('/wallets', (req, res) => {
         user.wallets.push(wallet);
         user.save(err => {
           if (err) {
-            console.log(err);
+            console.error(err);
           } else {
             res.json({});
           }
@@ -59,7 +59,6 @@ router.get('/transactions', (req, res) => {
       message: 'Permission Denied'
     });
   }
-  console.log(user);
   User.findOne({username: user.username}, (err, user) => {
     if (err || !user) {
       res.json({
@@ -224,7 +223,7 @@ router.get('/isUserSignedIn', (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      User.find({username: user.username}, (err, user) => {
+      User.findOne({username: user.username}, (err, user) => {
         if (err || !user) {
           res.json({
             error: true,
