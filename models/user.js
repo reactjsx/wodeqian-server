@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const wallet = require('./wallet');
 
 const userSchema = new mongoose.Schema({
+  nickname: {type: String, required: true},
   username: {type: String, required: true},
   password: {type: String, required: true},
   wallets: [{

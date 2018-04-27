@@ -110,6 +110,7 @@ router.post('/transactions', (req, res) => {
     } else {
       Transaction.create({
         name: req.body.name,
+        type: req.body.type,
         category: req.body.category,
         year: req.body.year,
         month: req.body.month,
@@ -159,6 +160,7 @@ router.get('/users/signup', (req, res) => {
 router.post('/users/signup', (req, res) => {
   const hash= bcrypt.hashSync(req.body.password.trim(), 10);
   const user = new User ({
+    nickname: req.body.nickname,
     username: req.body.username.trim(),
     password: hash
   });
@@ -168,6 +170,8 @@ router.post('/users/signup', (req, res) => {
     } else {
       const token = helper.generateToken(user);
       res.json({
+        username: user.username,
+        nickname: user.nickname,
         token: token
       });
     }
@@ -200,6 +204,7 @@ router.post('/users/signin', (req, res) => {
           const token = helper.generateToken(user);
           res.json({
             username: user.username,
+            nickname: user.nickname,
             token: token
           });
         });
@@ -228,6 +233,7 @@ router.get('/isUserSignedIn', (req, res) => {
         } else {
           res.json({
             username: user.username,
+            nickname: user.nickname,
             token: token
           });
         }
