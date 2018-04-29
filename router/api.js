@@ -103,7 +103,7 @@ router.post('/transactions', (req, res) => {
       message: 'Permission Denied'
     });
   }
-  Wallet.findOne({name: req.body.wallet}, (err, wallet) => {
+  Wallet.findById(req.body.walletId, (err, wallet) => {
     if (err) {
       console.error(err);
     } else {
