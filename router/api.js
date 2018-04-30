@@ -104,8 +104,11 @@ router.post('/transactions', (req, res) => {
     });
   }
   Wallet.findById(req.body.walletId, (err, wallet) => {
-    if (err) {
-      console.error(err);
+    if (err || !wallet) {
+      res.json({
+        error: true,
+        message: 'Wallet Not Exist'
+      });
     } else {
       Transaction.create({
         name: req.body.name,
@@ -137,12 +140,15 @@ router.delete('/transactions', (req, res) => {
   if (!user) {
     return res.json({
       error: true,
-      message: 'Permission Denied'
+      message: 'Wallet Not Exist'
     });
   }
   Wallet.findById(req.body.walletId, (err, wallet) => {
-    if (err) {
-      console.error(err);
+    if (err || !wallet) {
+      res.json({
+        error: true,
+        message: 'Permission Denied'
+      });
     } else {
       Wallet.update(
         { _id: wallet._id },
