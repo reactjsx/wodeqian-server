@@ -135,6 +135,36 @@ router.post('/transactions', (req, res) => {
   res.json({});
 });
 
+router.put('/transactions', (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.json({
+      error: true,
+      message: 'Permission Denied'
+    });
+  }
+  Transaction.findById(req.body.id, (err, transaction) => {
+    if (err || !transaction) {
+      res.json({
+        error: true,
+        message: 'Transaction Not Exist'
+      });
+    } else {
+      transaction.name = req.body.name;
+      transaction.type = req.body.type;
+      transaction.category = req.body.category;
+      transaction.year = req.body.year;
+      transaction.month = req.body.month;
+      transaction.day = req.body.day;
+      transaction.cost = req.body.cost;
+      transaction.save(err => {
+        console.error(err);
+      });
+    }
+  });
+  res.json({});
+});
+
 router.delete('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
