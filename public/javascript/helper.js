@@ -10,6 +10,6 @@ helper.generateToken = (user) => {
   };
   
   return jwt.sign(u, 'Who The Fuck Are You', {
-    expiresIn: 60 * 60
+    expiresIn: 60 * 60 * 24 * 365
   });
 };
