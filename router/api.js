@@ -51,6 +51,40 @@ router.post('/wallets', (req, res) => {
   });
 });
 
+router.post('/budgets', (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.json({
+      error: true,
+      message: 'Permission Denied'
+    });
+  }
+  User.findOne({username: user.username}, (err, user) => {
+    if (err || !user) {
+      res.json({
+        error: true,
+        message: 'Permission Denied'
+      });
+    } else {
+      Budget.create({
+        category: req.body.category,
+        year: req.body.year,
+        month: req.body.month,
+        amount: req.body.amount
+      }).then(budget => {
+        user.budgets.push(budget);
+        user.save(err => {
+          if (err) {
+            console.error(err);
+          } else {
+            res.json({});
+          }
+        });
+      });
+    }
+  });
+});
+
 router.get('/transactions', (req, res) => {
   const user = req.user;
   if (!user) {
@@ -66,20 +100,24 @@ router.get('/transactions', (req, res) => {
         message: 'Permission Denied'
       });
     } else {
-      User.populate(user, {
-        path: 'wallets'
-      }, (err, user) => {
+      User.populate(user, [
+        { path: 'wallets' },
+        { path: 'budgets' }
+      ], (err, user) => {
         if (err) {
           console.error(err);
         } else {
           Wallet.populate(user.wallets, [
             {path: 'transactions'},
-            {path: 'budgets'}
           ], (err, wallets) => {
             if (err) {
               console.error(err);
             } else {
-              res.json(wallets);
+              const budgets = user.budgets;
+              res.json({
+                budgets: budgets,
+                wallets: wallets
+              });
             }
           });
         }

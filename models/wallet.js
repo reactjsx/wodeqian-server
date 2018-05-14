@@ -9,12 +9,6 @@ const walletSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Transaction'
     }
-  ],
-  budgets: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Budget'
-    }
   ]
 });
 
